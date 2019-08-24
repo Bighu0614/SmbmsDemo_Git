@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdqn.conlletion.UserDao">
+    <resultMap id="getAddressList" type="com.bdqn.entity.Address">
+        <id property="id" column="a_id"></id>
+        <result property="contact" column="contact"></result>
+        <result property="tel" column="tel"></result>
+    </resultMap>
+    <resultMap id="userbyRole" type="com.bdqn.entity.User2">
+        <id property="id" column="id"></id>
+        <result property="userName" column="userName"></result>
+        <collection property="addressList" resultMap="getAddressList"/>
+    </resultMap>
+    <select id="checkCode" resultType="User">
+        select * from smbms_user where userCode = #{0} and userPassword = #{1}
+    </select>
+    <select id="checkName" resultType="int">
+        select count(1) from smbms_user where usercode = #{0}
+    </select>
+    <select id="getAll" resultType="com.bdqn.entity.User2">
+        select * from smbms_user u,smbms_role r where u.userrole = r.id LIMIT #{page},5
+    </select>
+    <select id="getCount" resultType="java.lang.Integer">
+        select count(1) from smbms_user u,smbms_role r
+        <where>
+            <if test="user.userName!=null">
+                and u.userName like concat('%',#{user.userName},'%')
+            </if>
+            <if test="user.userRole!=0">
+                and u.userRole = #{user.userRole}
+            </if>
+            and u.userrole = r.id
+        </where>
+    </select>
+    <select id="selectInfo" resultType="com.bdqn.entity.User2">
+        select * from smbms_user u,smbms_role r
+        <where>
+            <if test="user.userName!=null">
+                and u.userName like concat('%',#{user.userName},'%')
+            </if>
+            <if test="user.userRole!=0">
+                and u.userRole = #{user.userRole}
+            </if>
+            and u.userrole = r.id LIMIT #{pagee},5
+        </where>
+    </select>
+    <insert id="addInfo">
+        insert  into smbms_user values (#{id},#{userCode},#{userName},#{userPassword},#{gender},#{birthday},#{phone},#{address},#{userRole}
+        ,#{createdBy},#{creationDate},#{modifyBy},#{modifyDate},#{idPicPath})
+    </insert>
+    <update id="updatePwd">
+        update smbms_user set userPassword = #{param2} where userName = #{param1}
+    </update>
+    <select id="userInfo" resultType="com.bdqn.entity.User2">
+        select * from smbms_user u,smbms_role r where u.userrole = r.id and  u.id = #{0}
+    </select>
+    <update id="updateInfo">
+        update smbms_user set userName = #{userName},birthday=#{birthday},phone=#{phone},address=#{address},userRole=#{userRole}
+        ,gender=#{gender} where id = #{id}
+    </update>
+    <delete id="delInfo">
+        delete from smbms_user where id = #{0}
+    </delete>
+    <select id="userbyRole" resultMap="userbyRole">
+        select u.*,a.*,a.id as a_id,u.username,a.contact,a.tel from smbms_user u,smbms_address a where u.id = a.userid and u.id = 1
+    </select>
+</mapper>

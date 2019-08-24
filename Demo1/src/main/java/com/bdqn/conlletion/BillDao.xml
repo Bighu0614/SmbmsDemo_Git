@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdqn.conlletion.BillDao">
+    <select id="getAll" resultType="Bill">
+        select * from smbms_bill b,smbms_provider p where  b.providerid = p.id
+    </select>
+    <select id="selectInfo" resultType="Bill">
+        select * from smbms_bill b,smbms_provider p
+        <where>
+            <if test="productName!=null">
+                and b.productName like concat('%',#{productName},'%')
+            </if>
+            <if test="isPayment!=0">
+                and b.isPayment = #{isPayment}
+            </if>
+            <if test="providerId!=0">
+                and b.providerId = #{providerId}
+            </if>
+            and p.id = b.providerId
+        </where>
+    </select>
+    <insert id="addInfo">
+        insert into smbms_bill values (#{id},#{billCode},#{productName},#{productDesc},#{productUnit},#{productCount},
+        #{totalPrice},#{isPayment},#{createdBy},#{creationDate},#{modifyBy},#{modifyDate},#{providerId})
+    </insert>
+    <select id="userInfo" resultType="com.bdqn.entity.Bill">
+        select * from smbms_bill u,smbms_provider r where u.providerid = r.id and  u.id = #{0}
+    </select>
+    <update id="updateInfo">
+        update smbms_Bill set billCode = #{billCode},productName=#{productName},productUnit=#{productUnit},productCount=#{productCount},
+        totalPrice=#{totalPrice}
+        ,providerId=#{providerId},isPayment=#{isPayment} where id = #{id}
+    </update>
+    <delete id="delInfo">
+        delete from smbms_bill where id = #{0}
+    </delete>
+</mapper>
