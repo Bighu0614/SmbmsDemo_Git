@@ -20,19 +20,19 @@
 
     <!-- 导入属性文件   -->
 <!--    <context:property-placeholder location="classpath:database.properties"/>-->
-    <bean class="org.springframework.jndi.JndiObjectFactoryBean" id="dataSource">
-        <property name="jndiName">
-            <value>java:comp/env/jdbc/smbms</value>
-        </property>
-    </bean>
+    <!--<bean class="org.springframework.jndi.JndiObjectFactoryBean" id="dataSource">-->
+        <!--<property name="jndiName">-->
+            <!--<value>java:comp/env/jdbc/smbms</value>-->
+        <!--</property>-->
+    <!--</bean>-->
     <!--扫描包下的注解信息-->
     <context:component-scan base-package="com.bdqn.conlletion"/>
-<!--    <bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">-->
-<!--        <property name="driverClassName" value='com.mysql.jdbc.Driver'/>-->
-<!--        <property name="url" value='jdbc:mysql://localhost:3306/smbms?useUnicode=true&amp;characterEncoding=utf-8'/>-->
-<!--        <property name="username" value='root'/>-->
-<!--        <property name="password" value='123456'/>-->
-<!--    </bean>-->
+    <bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">
+        <property name="driverClassName" value='com.mysql.jdbc.Driver'/>
+        <property name="url" value='jdbc:mysql://localhost:3306/smbms?useUnicode=true&amp;characterEncoding=utf-8'/>
+        <property name="username" value='root'/>
+        <property name="password" value='123456'/>
+    </bean>
 
 
     <!-- 定义事务管理器 -->
@@ -47,7 +47,7 @@
         <!-- 关联myBatis的sql映射文件 -->
         <property name="mapperLocations">
             <list>
-                <value>com/bdqn/conlletion/*.xml</value>
+                <value>classpath:com/bdqn/conlletion/*.xml</value>
             </list>
         </property>
     </bean>
@@ -76,7 +76,7 @@
         <property name="maxUploadSize" value="500000"/>
         <property name="defaultEncoding" value="UTF-8"></property>
     </bean>
-
+    <mvc:annotation-driven/>
     <!--配置消息转换器-->
     <mvc:annotation-driven>
         <mvc:message-converters>

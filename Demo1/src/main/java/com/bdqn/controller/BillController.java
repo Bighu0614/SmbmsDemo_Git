@@ -28,7 +28,7 @@ public class BillController {
     @Resource
     ProviderService ps;
     @ResponseBody
-    @RequestMapping(value = "load")
+    @RequestMapping(value = "load",produces = "application/json;charset=utf-8")
     public String load(HttpServletRequest request,HttpServletResponse response, String queryProductName, String queryProviderId, String queryIsPayment){
         Integer queryProviderId1 = queryProviderId!=null?Integer.parseInt(queryProviderId):0;
         Integer queryIsPayment1 =queryIsPayment!=null?Integer.parseInt(queryIsPayment):0;
